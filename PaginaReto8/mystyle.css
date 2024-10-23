@@ -1,0 +1,111 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #03443d;
+    color: #1b302b;
+}
+
+header {
+    background-color: #1b302b; /* Negro */
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+section {
+    padding: 20px;
+    margin: 10px;
+    border-radius: 50px;
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(28, 32, 29, 0.1);
+}
+
+h2 {
+    color: #09665d; /* Verde */
+}
+
+label {
+    display: block;
+    margin: 10px 0 5px;
+}
+
+input[type="text"], 
+input[type="file"], 
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+button {
+    background-color: #09665d; /* Verde */
+    color: white;
+    margin-top: 10px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #219653; /* Verde más oscuro */
+}
+
+footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #1b302b; /* Negro */
+    color: white;
+}
+
+#video-reproductor-maestro,
+#video-reproductor-estudiante {
+    margin-top: 10px;
+    display: none;
+}
+
+#video-player-maestro {
+    width: 100%;
+    height: 315px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.caja {
+    text-align: center; /* Centra el texto dentro de la caja */
+    padding: 20px; /* Espaciado interno */
+    border-radius: 8px; /* Bordes redondeados */
+    background-color: rgba(255, 255, 255, 0.5); /* Fondo semi-transparente */
+    backdrop-filter: blur(10px); /* Aplica el efecto de desenfoque */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Sombra opcional */
+}
+
+#inicio {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh; /* Ocupa toda la altura de la ventana */
+}
+nav {
+    background-color: #036800; /* Verde */
+    font-size: 25px;
+    padding: 10px 0;
+    text-align: center;
+    border-radius: 20px;
+    display: inline-block;
+    justify-content: center;
+    z-index: 1;
+}
+nav a {
+    color: #fff;
+    text-decoration: none;
+    padding: 0 20px;
+    border-radius: 20px;
+}
+nav a:hover {
+    background-color: #148610; /* Verde */
+    border-radius: 20px;
+}

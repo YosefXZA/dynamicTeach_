@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <title>Dashboard - Resultados de Exámenes</title>
+    <link rel="stylesheet" href="mystyle.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: #f9f9f9;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        #tablaResultados {
+            max-width: 800px;
+            margin: auto;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        #tablaResultados table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        #tablaResultados th, #tablaResultados td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+        #graficos {
+            max-width: 800px;
+            margin: auto;
+            margin-bottom: 20px;
+        }
+        canvas {
+            margin-bottom: 20px;
+        }
+        #consejosContenido {
+            max-width: 800px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Dashboard - Resultados de Exámenes</h1>
+        <nav><a href="maestro.html">Volver</a></nav>
+    </header>
+    <br>
+    <section id="tablaResultados"></section>
+    
+    <section id="graficos">
+        <h2>Resultados de las Preguntas</h2>
+        <canvas id="graficoPreguntasAcertadas"></canvas>
+        <canvas id="graficoPreguntasEquivocadas"></canvas>
+    </section>
+
+    <section id="consejosContenido">
+        <h2>Consejos para Mejorar la Clase</h2>
+        <div id="consejos"></div>
+    </section>
+
+    <script>
+        const resultados = JSON.parse(localStorage.getItem("resultadosExamen")) || [];
+        const tablaResultados = document.getElementById("tablaResultados");
+        const consejosContenido = document.getElementById("consejos");
+        const preguntasTotales = JSON.parse(localStorage.getItem("examen")) || [];
+
+        if (resultados.length > 0) {
+            let tablaHTML = '<table><thead><tr><th>Nombre</th><th>Apellido</th><th>Matrícula</th><th>Correo</th><th>Total Preguntas</th><th>Aciertos</th></tr></thead><tbody>';
+
+            resultados.forEach(resultado => {
+                tablaHTML += `
+                    <tr>
+                        <td>${resultado.nombre}</td>
+                        <td>${resultado.apellido}</td>
+                        <td>${resultado.matricula}</td>
+                        <td>${resultado.correo}</td>
+                        <td>${resultado.totalPreguntas}</td>
+                        <td>${resultado.aciertos}</td>
+                    </tr>`;
+            });
+
+            tablaHTML += '</tbody></table>';
+            tablaResultados.innerHTML = tablaHTML;
+
+            // Generar consejos
+            generarConsejos(resultados);
+
+            // Procesar resultados de preguntas
+            procesarResultadosPreguntas(resultados);
+        } else {
+            tablaResultados.innerHTML = '<p>No hay resultados disponibles.</p>';
+        }
+
+        function procesarResultadosPreguntas(resultados) {
+            const aciertosPorPregunta = new Array(preguntasTotales.length).fill(0);
+            const erroresPorPregunta = new Array(preguntasTotales.length).fill(0);
+            const erroresDetalles = new Array(preguntasTotales.length).fill(0); // Para recomendaciones
+
+            resultados.forEach(resultado => {
+                if (resultado.respuestas) {
+                    resultado.respuestas.forEach((respuesta, index) => {
+                        if (preguntasTotales[index] && preguntasTotales[index].correcta === respuesta) {
+                            aciertosPorPregunta[index]++;
+                        } else {
+                            erroresPorPregunta[index]++;
+                            erroresDetalles[index]++; // Contar errores para recomendaciones
+                        }
+                    });
+                }
+            });
+
+            crearGraficos(aciertosPorPregunta, erroresPorPregunta);
+            generarRecomendaciones(erroresPorPregunta);
+        }
+
+        function crearGraficos(aciertos, errores) {
+            const ctxAcertadas = document.getElementById('graficoPreguntasAcertadas').getContext('2d');
+            const ctxEquivocadas = document.getElementById('graficoPreguntasEquivocadas').getContext('2d');
+
+            new Chart(ctxAcertadas, {
+                type: 'bar',
+                data: {
+                    labels: preguntasTotales.map((_, index) => `Pregunta ${index + 1}`),
+                    datasets: [{
+                        label: 'Aciertos',
+                        data: aciertos,
+                        backgroundColor: 'rgba(75, 192, 42, 0.5)',
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            new Chart(ctxEquivocadas, {
+                type: 'bar',
+                data: {
+                    labels: preguntasTotales.map((_, index) => `Pregunta ${index + 1}`),
+                    datasets: [{
+                        label: 'Errores',
+                        data: errores,
+                        backgroundColor: 'rgba(192, 42, 75, 0.5)',
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        function generarConsejos(resultados) {
+            let totalAciertos = 0;
+
+            resultados.forEach(resultado => {
+                totalAciertos += resultado.aciertos;
+            });
+
+            const promedioAciertos = totalAciertos / resultados.length;
+
+            if (promedioAciertos < 5) {
+                consejosContenido.innerHTML = "<p>Los alumnos parecen estar teniendo dificultades. Considere revisar los temas más complicados y ofrecer tutorías adicionales.</p>";
+            } else if (promedioAciertos < 8) {
+                consejosContenido.innerHTML = "<p>Los alumnos están yendo por buen camino, pero podrían beneficiarse de más práctica. Considere implementar más ejercicios prácticos.</p>";
+            } else {
+                consejosContenido.innerHTML = "<p>¡Excelente trabajo! Los alumnos están comprendiendo bien el material. Podría ser el momento de introducir conceptos más avanzados.</p>";
+            }
+        }
+
+        function generarRecomendaciones(erroresPorPregunta) {
+            const maxErrores = Math.max(...erroresPorPregunta);
+            const preguntasConMasErrores = erroresPorPregunta.map((errores, index) => errores === maxErrores ? index : -1).filter(index => index !== -1);
+
+            if (preguntasConMasErrores.length > 0) {
+                const recomendaciones = preguntasConMasErrores.map(index => `Pregunta ${index + 1}: Revisión del tema relacionado con esta pregunta.`).join('<br>');
+                consejosContenido.innerHTML += `<h3>Recomendaciones Específicas:</h3><p>${recomendaciones}</p>`;
+            }
+        }
+    </script>
+</body>
+</html>

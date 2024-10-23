@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Personalización del Aprendizaje</title>
+    <link rel="stylesheet" href="mystyle.css">
+    <script src="myscript.js"></script>
+
+</head>
+<style>
+    
+    
+</style>
+<body>
+    <header>
+        <h1>Personalización del Aprendizaje</h1>
+        <nav>
+            <a href="Inicio.html">Inicio</a>
+            <a href="povalumno.html">Perpectiva del Alumno</a>
+        </nav>
+    </header>
+    <br><br>
+    <div style="display: flex; justify-content: center; width: 100%;">
+        <section style="margin: 0 10px; width: 500px;">
+            <div>
+                <h2>Descripción de la Clase</h2>
+                <label for="numeroClase">Número de Clase:</label>
+                <input type="text" id="numeroClase" style="width: 50px; margin-right: 10px;">
+                <label for="fechaClase">Fecha:</label>
+                <input type="date" id="fechaClase" style="margin-right: 10px;">
+                
+                <br><br>
+                <textarea style="width: fit-content;" id="descripcion" rows="5" cols="50" placeholder="Escribe aquí la descripción de la clase o del tema visto..."></textarea>
+                <br>
+                <button type="button" onclick="subirDescripcion()">Subir Información</button>
+            </div>
+        </section><br>
+        <section style="flex-grow: 1; margin: 0 10px; width: 300px;">
+            <div>
+                <h2>Información de los Alumnos</h2>
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr>
+                            <th style="border: 1px solid #ddd; padding: 8px;">Nombre</th>
+                            <th style="border: 1px solid #ddd; padding: 8px;">Apellido</th>
+                            <th style="border: 1px solid #ddd; padding: 8px;">Edad</th>
+                            <th style="border: 1px solid #ddd; padding: 8px;">Correo Electrónico</th>
+                            <th style="border: 1px solid #ddd; padding: 8px;">Matricula</th>
+                            <th style="border: 1px solid #ddd; padding: 8px;">Tipo de Aprendizaje</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            
+                        </tr>
+                        
+                    </tbody>
+                </table>
+                <button id="borrar-datos-btn" style="margin-top: 20px;">Borrar Datos de Alumnos</button>
+            </div>
+            <section id="recomendaciones">
+                <h2>Recomendaciones Personalizadas</h2>
+                <div id="resultado-recomendaciones">
+                    <p>Cargando recomendaciones...</p>
+                </div>
+            </section>
+        </section><br>
+        
+    </div>
+    
+    
+    <br>
+    <!--  Esta parte es para subir videos  -->
+    <section id="subida-contenido">
+        <h2>Subida de Contenido Multimedia</h2>
+        <form id="subida-video-form">
+            
+            <div style="flex: 1;">
+                <label for="video-url">Enlace de Video de YouTube:</label>
+                <input style="width: 70%;" type="text" id="video-url" name="video-url" placeholder="https://www.youtube.com/watch?v=..." required>
+                <div id="video-reproductor-maestro" style="display:none;">
+                    <h3>Video Relacionado:</h3>
+                    <iframe id="video-player-maestro" src="" frameborder="0" allowfullscreen style="width: 100%; height: 500px;"></iframe>
+                </div>
+                <button id="enviar-video">Enviar Video</button>
+                <div id="mensaje" style="color: green; display: none;">Video enviado con éxito!</div>
+            </div><br>
+
+            <div style="flex: 1;">
+                <label for="video-sustitucion">Video de Sustitución:</label>
+                <input style="width: 70%;" type="file" id="video-sustitucion" name="video-sustitucion" accept="video/*" required>
+                <div id="video-reproductor-estudiante" style="display:none;">
+                    <h3>Video para Estudiantes:</h3>
+                    <video id="video-player-estudiante" controls style="width: 100%; height: 500px;">
+                        <source id="video-source-estudiante" src="" type="video/mp4">
+                        Tu navegador no soporta la etiqueta de video.
+                    </video>
+                </div>
+                <button id="subir-video" type="button" style="margin-top: 20px;">Subir Video</button>
+            </div>
+        </form>
+    </section><br>
+    <!--  Aqui termina la parte de los videos  -->
+    
+    
+    <!--  Creacion de equipos  -->
+    <section id="crear-equipos">
+        <h2>Herramienta para Crear Equipos</h2>
+        <p>Introduce los nombres de los alumnos para crear grupos:</p>
+        <textarea style="width: 70%;" id="nombres-alumnos" placeholder="Ejemplo: Juan, María, Pedro..."></textarea><br>
+        <button id="crear-equipos-btn">Crear Equipos</button>
+        <div id="resultado-equipos"></div>
+    </section>
+    <!--  Fin de creacion de equipos  -->
+    <br>
+    <!--  Creacion de Examenes  -->
+    <section id="" >
+        <h2>Herramientas de Examenes</h2>
+        <nav><a href="crearExamen.html" style="font-size: 25px; border-radius: 50px;">Crear examen</a></nav><br><br>
+
+        <table style="width: 100%; border-collapse: collapse; text-align: center;">
+            <thead>
+                <tr>
+                    <th style="border: 1px solid #ddd; padding: 8px;">Nombre</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">Apellido</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">Matrícula</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">Correo Electrónico</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">Total de Preguntas</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">Aciertos</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="resultados">
+            </tbody>
+        </table>
+        <nav><a href="DashboardExamen.html">Ir al Dashboard del Examen</a></nav>
+    </section>
+    <!--  Fin de creacion de Examenes  -->
+
+    <footer>
+        <p>&copy; 2024 Personalización del Aprendizaje. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        
+        // Reproducción de video al introducir enlace de YouTube
+        document.getElementById('video-url').addEventListener('change', function() {
+            const videoUrl = this.value;
+            const videoId = videoUrl.split('v=')[1]?.split('&')[0];
+
+            if (videoId) {
+                const videoPlayerMaestro = document.getElementById('video-player-maestro');
+                const videoReproductorMaestro = document.getElementById('video-reproductor-maestro');
+                videoPlayerMaestro.src = `https://www.youtube.com/embed/${videoId}`;
+                videoReproductorMaestro.style.display = 'block';
+            } else {
+                document.getElementById('video-reproductor-maestro').style.display = 'none';
+            }
+        });
+
+        // Evento para el botón "Enviar Video"
+        document.getElementById('enviar-video').addEventListener('click', function() {
+            const videoUrl = document.getElementById('video-url').value;
+            localStorage.setItem('videoUrl', videoUrl);
+            const mensaje = document.getElementById('mensaje');
+            mensaje.style.display = 'block';
+            mensaje.textContent = "Video enviado con éxito!";
+        });
+
+        //Video local
+        document.getElementById('video-sustitucion').addEventListener('change', function() {
+        const videoInputSustitucion = this;
+        const videoPlayerEstudiante = document.getElementById('video-player-estudiante');
+        const videoSourceEstudiante = document.getElementById('video-source-estudiante');
+        const videoReproductorEstudiante = document.getElementById('video-reproductor-estudiante');
+
+        if (videoInputSustitucion.files.length > 0) {
+            const file = videoInputSustitucion.files[0];
+            const url = URL.createObjectURL(file);
+            videoSourceEstudiante.src = url;
+            videoPlayerEstudiante.load();
+            videoReproductorEstudiante.style.display = 'block';
+        } else {
+            videoReproductorEstudiante.style.display = 'none';
+        }
+        });
+
+        document.getElementById('subir-video').addEventListener('click', function() {
+        const videoSourceEstudiante = document.getElementById('video-source-estudiante');
+        if (videoSourceEstudiante.src) {
+            localStorage.setItem('videoURL', videoSourceEstudiante.src);
+            alert('Video subido con éxito.');
+        } else {
+            alert('Por favor, selecciona un video primero.');
+        }
+        });
+
+    // Función para obtener los nombres de los alumnos desde el textarea
+
+        function obtenerNombres() {
+            const textarea = document.getElementById('nombres-alumnos');
+            const nombres = textarea.value.split(',').map(nombre => nombre.trim()).filter(nombre => nombre);
+            console.log(nombres); // Verifica los nombres
+            return nombres;
+        }
+        function crearEquipos(nombres) {
+            const numeroEquipos = 3;
+            const equipos = Array.from({ length: numeroEquipos }, () => []);
+            nombres.forEach((nombre, index) => {
+                equipos[index % numeroEquipos].push(nombre);
+            });
+            return equipos;
+        }
+        function mostrarResultados(equipos) {
+            const resultadoDiv = document.getElementById('resultado-equipos');
+            resultadoDiv.innerHTML = ''; // Limpiar resultados previos
+
+            equipos.forEach((equipo, index) => {
+                const equipoDiv = document.createElement('div');
+                equipoDiv.textContent = `Equipo ${index + 1}: ${equipo.join(', ')}`;
+                resultadoDiv.appendChild(equipoDiv);
+            });
+        }
+        document.getElementById('crear-equipos-btn').addEventListener('click', function() {
+            const nombres = obtenerNombres();
+            if (nombres.length === 0) {
+                alert('Por favor, introduce al menos un nombre.');
+                return;
+            }
+            const equipos = crearEquipos(nombres);
+            mostrarResultados(equipos);
+        });
+    //Fin de creacion de equipos
+
+
+        document.addEventListener('DOMContentLoaded', function() {
+        const tableBody = document.querySelector('table tbody');
+
+        // Cargar los datos de los alumnos desde localStorage
+        const alumnos = JSON.parse(localStorage.getItem('alumnos')) || [];
+
+        alumnos.forEach(alumno => {
+        const newRow = document.createElement('tr');
+        newRow.innerHTML = `
+            <td style="border: 1px solid #ddd; padding: 8px;">${alumno.nombre}</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">${alumno.apellido}</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">${alumno.edad}</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">${alumno.correo}</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">${alumno.matricula}</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">${alumno.tipo_aprendizaje}</td>
+            
+        `;
+        tableBody.appendChild(newRow);
+        });
+        });
+
+        document.getElementById('borrar-datos-btn').addEventListener('click', function() {
+        // Borrar los datos de alumnos del localStorage
+        localStorage.removeItem('alumnos');
+
+        // Limpiar la tabla
+        const tableBody = document.querySelector('table tbody');
+        tableBody.innerHTML = ''; // Limpia todas las filas de la tabla
+
+        alert('Datos de alumnos borrados con éxito.'); // Mensaje de confirmación
+        });
+
+
+        function subirDescripcion() {
+        const numeroClase = document.getElementById('numeroClase').value;
+        localStorage.setItem('numeroClaseA', numeroClase);
+        const fechaClase = document.getElementById('fechaClase').value;
+        localStorage.setItem('fechaClaseA', fechaClase);
+        const descripcion = document.getElementById('descripcion').value;
+        localStorage.setItem('descripcionClase', descripcion);
+        alert("Descripción subida con éxito!");
+        }
+
+        //Resultados del examen
+        // Cargar los resultados desde localStorage
+        const resultadosExamen = JSON.parse(localStorage.getItem("resultadosExamen")) || [];
+
+        function mostrarResultados() {
+        const tbody = document.getElementById("resultados");
+        tbody.innerHTML = ""; // Limpiar el contenido actual
+
+        if (resultadosExamen.length > 0) {
+            resultadosExamen.forEach((resultado, index) => {
+                const fila = document.createElement("tr");
+                fila.innerHTML = `
+                    <td>${resultado.nombre}</td>
+                    <td>${resultado.apellido}</td>
+                    <td>${resultado.matricula}</td>
+                    <td>${resultado.correo}</td>
+                    <td>${resultado.totalPreguntas}</td>
+                    <td>${resultado.aciertos}</td>
+                    <td><button onclick="eliminarResultado(${index})">Eliminar</button></td>
+                `;
+                tbody.appendChild(fila);
+            });
+        } else {
+            const fila = document.createElement("tr");
+            fila.innerHTML = `<td colspan="7">No hay resultados disponibles.</td>`;
+            tbody.appendChild(fila);
+        }
+        }
+
+        function eliminarResultado(index) {
+        // Eliminar el resultado del array
+        resultadosExamen.splice(index, 1);
+        // Guardar el array actualizado en localStorage
+        localStorage.setItem("resultadosExamen", JSON.stringify(resultadosExamen));
+        // Mostrar los resultados de nuevo
+        mostrarResultados();
+        }
+
+        mostrarResultados(); // Cargar los resultados al cargar la página
+
+        
+    </script>
+    
+</body>
+
+</html>

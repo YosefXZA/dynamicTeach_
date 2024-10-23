@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <title>Personalización del Aprendizaje</title>
+    <link rel="stylesheet" href="mystyle.css">
+    <style>
+        * {
+            font-family: 'Nunito';
+        }
+        body {
+            font-size: 20px;
+            background: #f0ebf8;
+            padding-bottom: 50px;
+        }
+        h1 {
+            text-align: center;
+        }
+        #juego {
+            max-width: 800px;
+            margin: auto;
+        }
+        .contenedor-pregunta {
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 20px;
+            background: #fff;
+        }
+        label {
+            display: flex;
+            font-size: 22px;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+        input[type="text"], input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        button {
+            width: fit-content;
+            display: block;
+            margin: auto;
+            border: none;
+            background: #036800;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        .resultado {
+            text-align: center;
+        }
+        nav {
+            background-color: #036800; /* Verde */
+            font-size: 25px;
+            padding: 10px 0;
+            text-align: center;
+            border-radius: 20px;
+            display: inline-block;
+            justify-content: center;
+            z-index: 1;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            padding: 0 20px;
+            border-radius: 20px;
+        }
+        nav a:hover {
+            background-color: #148610; /* Verde */
+            border-radius: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Personalización del Aprendizaje</h1>
+        <nav><a href="crearExamen.html">Volver</a></nav>
+    </header>
+    
+    <section id="juego">
+        <h2>Datos del Alumno</h2>
+        <input type="text" id="nombre" placeholder="Nombre" required>
+        <input type="text" id="apellido" placeholder="Apellido" required>
+        <input type="text" id="matricula" placeholder="Matrícula" required>
+        <input type="email" id="correo" placeholder="Correo Electrónico" required>
+
+        <h2>Examen</h2>
+        <div id="preguntas"></div>
+        <button id="corregir">Corregir</button><br>
+        <button id="enviar">Enviar</button><br>
+
+        <div id="resultado" class="resultado"></div>
+    </section>
+
+    <script>
+        const bd_juego = JSON.parse(localStorage.getItem("examen")) || [];
+        let respuestas = [];
+        let cantiCorrectas = 0;
+
+        function cargarPreguntas() {
+            bd_juego.forEach((pregunta, index) => {
+                const contenedor = document.createElement("div");
+                contenedor.className = "contenedor-pregunta";
+                contenedor.id = index;
+
+                const h2 = document.createElement("h2");
+                h2.textContent = index + 1 + " - " + pregunta.pregunta;
+                contenedor.appendChild(h2);
+
+                const opciones = document.createElement("div");
+                opciones.appendChild(crearLabel(index, pregunta.correcta));
+                pregunta.incorrectas.forEach((opcion, i) => {
+                    opciones.appendChild(crearLabel(index, opcion));
+                });
+
+                contenedor.appendChild(opciones);
+                document.getElementById("preguntas").appendChild(contenedor);
+            });
+        }
+
+        function crearLabel(preguntaIndex, txtOpcion) {
+            const label = document.createElement("label");
+            const input = document.createElement("input");
+            input.setAttribute("type", "radio");
+            input.name = "p" + preguntaIndex;
+            input.setAttribute("value", txtOpcion);
+            input.setAttribute("onclick", "seleccionar(" + preguntaIndex + ", '" + txtOpcion + "')");
+            const span = document.createElement("span");
+            span.textContent = txtOpcion;
+            label.appendChild(input);
+            label.appendChild(span);
+            return label;
+        }
+
+        function seleccionar(pos, opElegida) {
+            respuestas[pos] = opElegida;
+        }
+
+        cargarPreguntas();
+        document.getElementById("enviar").onclick = function () {
+            if (!validarCampos()) {
+                alert("Por favor, completa todos los campos obligatorios.");
+                return;
+            }
+        }
+        document.getElementById("corregir").onclick = function () {
+            if (!validarCampos()) {
+                alert("Por favor, completa todos los campos obligatorios.");
+                return;
+            }
+        
+
+            cantiCorrectas = 0; 
+            for (let i = 0; i < bd_juego.length; i++) {
+                const pregunta = bd_juego[i];
+                const respuestaElegida = respuestas[i];
+                if (pregunta.correcta === respuestaElegida) {
+                    cantiCorrectas++;
+                    document.getElementById(i).classList.add("correcta");
+                } else {
+                    document.getElementById(i).classList.add("incorrecta");
+                }
+            }
+
+            let inputs = document.getElementsByTagName("input");
+            for (let i = 0; i < inputs.length; i++) {
+                inputs[i].disabled = true;
+            }
+
+            const h2 = document.createElement("h2");
+            h2.className = "resultado";
+            h2.textContent = cantiCorrectas + " CORRECTAS - " + (bd_juego.length - cantiCorrectas) + " INCORRECTAS";
+            document.getElementById("resultado").appendChild(h2);
+        };
+
+        document.getElementById("enviar").onclick = function () {
+            const nombre = document.getElementById("nombre").value.trim();
+            const apellido = document.getElementById("apellido").value.trim();
+            const matricula = document.getElementById("matricula").value.trim();
+            const correo = document.getElementById("correo").value.trim();
+
+            const resultadoExamen = {
+                nombre,
+                apellido,
+                matricula,
+                correo,
+                totalPreguntas: bd_juego.length,
+                aciertos: cantiCorrectas
+            };
+
+            // Obtener resultados previos y agregar el nuevo
+            const resultadosPrevios = JSON.parse(localStorage.getItem("resultadosExamen")) || [];
+            resultadosPrevios.push(resultadoExamen);
+            localStorage.setItem("resultadosExamen", JSON.stringify(resultadosPrevios));
+
+            alert("Resultados enviados. Ahora puedes verlos en la página del maestro.");
+        };
+
+        function validarCampos() {
+            const nombre = document.getElementById("nombre").value.trim();
+            const apellido = document.getElementById("apellido").value.trim();
+            const matricula = document.getElementById("matricula").value.trim();
+            const correo = document.getElementById("correo").value.trim();
+
+            return nombre && apellido && matricula && correo;
+        }
+    </script>
+</body>
+</html>

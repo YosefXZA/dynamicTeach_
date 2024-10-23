@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <title>Personalización del Aprendizaje</title>
+    <link rel="stylesheet" href="mystyle.css">
+    <style>
+        /* Puedes agregar estilos aquí */
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Personalización del Aprendizaje</h1>
+        <nav>
+            <a href="Inicio.html">Inicio</a>
+        </nav>
+    </header>
+    
+    <section id="formulario-alumno">
+        <h2>Registro del Alumno</h2>
+        <form id="evaluacion-form">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" required>
+            <label for="apellido">Apellido:</label>
+            <input type="text" id="apellido" name="apellido" required>
+            <label for="edad">Edad:</label>
+            <input type="text" id="edad" name="edad" required>
+            <label for="correo">Correo Electrónico:</label>
+            <input type="email" id="correo" name="correo" required>
+            <label for="matricula">Matrícula:</label>
+            <input type="text" id="matricula" name="matricula" required>
+
+            <h2>Encuesta de Estilo de Aprendizaje</h2>
+            <div class="question">
+                <p>1. ¿Cómo prefieres recibir instrucciones?</p>
+                <label><input type="radio" name="q1" value="visual" required> Mirando ejemplos o diagramas.</label>
+                <label><input type="radio" name="q1" value="auditivo"> Escuchando explicaciones.</label>
+                <label><input type="radio" name="q1" value="kinestesico"> Haciendo las cosas por mí mismo.</label><br>
+            </div>
+
+            <div class="question">
+                <p>2. Cuando estudias, ¿qué te resulta más útil?</p>
+                <label><input type="radio" name="q2" value="visual" required> Ver gráficos, imágenes o vídeos.</label>
+                <label><input type="radio" name="q2" value="auditivo"> Escuchar podcasts o grabaciones.</label>
+                <label><input type="radio" name="q2" value="kinestesico"> Realizar actividades prácticas o experimentos.</label><br>
+            </div>
+
+            <div class="question">
+                <p>3. Cuando intentas recordar algo, ¿qué técnica usas más a menudo?</p>
+                <label><input type="radio" name="q3" value="visual" required> Imaginarlo en mi mente.</label>
+                <label><input type="radio" name="q3" value="auditivo"> Repetirlo en voz alta.</label>
+                <label><input type="radio" name="q3" value="kinestesico"> Escribirlo o actuarlo.</label><br>
+            </div>
+
+            <div class="question">
+                <p>4. En un aula, ¿qué actividad te parece más interesante?</p>
+                <label><input type="radio" name="q4" value="visual" required> Ver presentaciones visuales o diapositivas.</label>
+                <label><input type="radio" name="q4" value="auditivo"> Escuchar debates o discusiones.</label>
+                <label><input type="radio" name="q4" value="kinestesico"> Participar en actividades o juegos.</label><br>
+            </div>
+
+            <div class="question">
+                <p>5. ¿Cuál de las siguientes afirmaciones describe mejor tu experiencia de aprendizaje?</p>
+                <label><input type="radio" name="q5" value="visual" required> Me gusta tener notas coloridas y organizadas.</label>
+                <label><input type="radio" name="q5" value="auditivo"> Me resulta útil escuchar a otros hablar sobre el tema.</label>
+                <label><input type="radio" name="q5" value="kinestesico"> Prefiero aprender a través de la práctica y el movimiento.</label><br>
+            </div>
+
+            <div class="question">
+                <p>6. Cuando te enfrentas a un nuevo tema, ¿cómo sueles abordarlo?</p>
+                <label><input type="radio" name="q6" value="visual" required> Buscando vídeos o tutoriales.</label>
+                <label><input type="radio" name="q6" value="auditivo"> Hablando con alguien que lo conozca.</label>
+                <label><input type="radio" name="q6" value="kinestesico"> Probando diferentes métodos o enfoques.</label><br>
+            </div>
+
+            <div class="question">
+                <p>7. ¿Qué tipo de actividades disfrutas más en tu tiempo libre?</p>
+                <label><input type="radio" name="q7" value="visual" required> Dibujar, pintar o ver películas.</label>
+                <label><input type="radio" name="q7" value="auditivo"> Escuchar música o podcasts.</label>
+                <label><input type="radio" name="q7" value="kinestesico"> Practicar deportes o hacer manualidades.</label><br>
+            </div>
+            
+            <button type="submit">Enviar</button>
+        </form>
+        <div id="recomendacion"></div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Personalización del Aprendizaje. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        const form = document.getElementById('evaluacion-form');
+        
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevenir el envío del formulario
+        
+            // Obtener los valores del formulario
+            const nombre = document.getElementById('nombre').value;
+            const apellido = document.getElementById('apellido').value;
+            const edad = document.getElementById('edad').value;
+            const correo = document.getElementById('correo').value;
+            const matricula = document.getElementById('matricula').value;
+            const resultCount = { visual: 0, auditivo: 0, kinestesico: 0 };
+
+            // Contar las respuestas de estilo de aprendizaje
+            for (let i = 1; i <= 7; i++) {
+                const answer = form[`q${i}`].value;
+                resultCount[answer]++;
+            }
+
+            // Determinar el estilo de aprendizaje predominante
+            const highestCount = Math.max(resultCount.visual, resultCount.auditivo, resultCount.kinestesico);
+            const learningStyle = Object.keys(resultCount).find(key => resultCount[key] === highestCount);
+
+            // Crear un objeto alumno
+            const alumno = { nombre, apellido, edad, correo, matricula, tipo_aprendizaje: learningStyle };
+            
+            // Obtener alumnos existentes del localStorage
+            const alumnos = JSON.parse(localStorage.getItem('alumnos')) || [];
+            alumnos.push(alumno); // Añadir nuevo alumno a la lista
+            
+            // Guardar la lista actualizada en el localStorage
+            localStorage.setItem('alumnos', JSON.stringify(alumnos));
+
+            // Mostrar los resultados
+            const resultText = `Resultados:<br>
+                Visual: ${resultCount.visual}<br>
+                Auditivo: ${resultCount.auditivo}<br>
+                Kinestésico: ${resultCount.kinestesico}<br>`;
+                
+            document.getElementById('recomendacion').innerHTML = resultText + `<strong>Tu estilo de aprendizaje predominante es: ${learningStyle}</strong>`;
+
+            alert("Formulario enviado.");
+        
+            // Limpiar el formulario
+            form.reset();
+        });
+    </script>
+    
+</body>
+</html>

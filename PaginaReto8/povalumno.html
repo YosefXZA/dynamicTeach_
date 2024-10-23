@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Personalización del Aprendizaje</title>
+    <link rel="stylesheet" href="mystyle.css">
+    <style>
+       
+        
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Personalización del Aprendizaje</h1>
+        <nav>
+            
+            <a href="maestro.html">Volver</a>
+        </nav>
+    </header>
+    <div style="display: flex; justify-content: center; width: 100%;">
+        <div style="flex-grow: 1; margin: 0 10px; height: fit-content;">
+        <section style="width: 700px;">
+                <h2 style="text-align: center;">Descripción de la Clase</h2>
+                <label for="numeroClase">Número de Clase:</label>
+                <input type="text" id="numeroClaseAlumno" style="width: 50px; margin-right: 10px;" readonly>
+                <label for="fechaClase">Fecha:</label>
+                <input type="date" id="fechaClaseAlumno" style="margin-right: 10px;"readonly>
+                <br><br>
+                <textarea style="width: fit-content;" id="descripcionAlumno" rows="5" cols="50" placeholder="Descripción de la clase..." readonly></textarea>
+                <br>
+        </section><br>
+        <section style="width: 700px;">
+            <h2 style="text-align: center;">Pizarron Electrónico</h2>
+            <br><br>
+            <textarea style="width: 90%;" id="descripcionAlumno" rows="5" cols="50" placeholder="Pizarron..." readonly></textarea>
+            <br>
+        </section><br>
+                <div>
+                    <section style="width: 700px;">
+                        <h2 style="text-align: center;">Examen</h2>
+                        <nav><a href="examenA.html" style="font-size: 25px; border-radius: 50px;">Realizar Examen</a></nav>
+                        <h2>Resultados de tu examen</h2>
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <tr>
+                                <th style="border: 1px solid #ddd; padding: 8px;">Errores</th>
+                                <th style="border: 1px solid #ddd; padding: 8px;">Aciertos</th>
+                            </tr>
+                            <tr></tr>
+                        </table>
+                        <section id="recomendaciones">
+                            <h2>Recomendación</h2>
+                            <div id="resultado-recomendaciones">
+                                <p>Te recomendamos repasar el tema ___________, te brindare los temas específicos los cuales te ayudaran en tu rendimiento...</p><br>
+                                <p>Estas preguntas se te complicaron, te recomendamos repasarlas...</p>
+                                <p>1.-</p>
+                                <p>2.-</p>
+                            </div>
+                        </section>
+                    </section>
+                </div>
+                </div>
+        <div style="width: 1150px;">
+        <section >
+            <div>
+                <h2 style="text-align: center;">Contenido Multimedia</h2>
+                <div id="video-reproductor-alumno" style="display:none; padding: 10px; border-radius: 5px;">
+                    <h3>Tu profesor proporciono un video relacionado a la clase de hoy:</h3>
+                    <iframe id="video-player-alumno" src="" frameborder="0" allowfullscreen style="width: 100%; height: 500px;"></iframe>
+                </div>
+            </div>
+        </section><br>
+        <section>
+            <div>
+                <h2 style="text-align: center;">Contenido de Sustitución</h2>
+                <h3>Tu profesor no pudo presentarse hoy, pero aquí tienes un video de la clase creado por el:</h3>
+                <video id="video-player-local" controls style="width: 100%; height: 500px;">
+                    <source id="video-source-alumno" src="">
+                    Tu navegador no soporta el elemento de video.
+                </video>
+            </div>
+        </section>
+        </div>
+    </div>
+    
+
+    <footer>
+        <p>&copy; 2024 Personalización del Aprendizaje. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+
+        // Cargar el video local de sustitución
+        document.addEventListener('DOMContentLoaded', function() {
+        const videoSourceAlumno = document.getElementById('video-source-alumno');
+        const videoPlayerLocal = document.getElementById('video-player-local');
+        const videoURL = localStorage.getItem('videoURL');
+
+        if (videoURL) {
+            videoSourceAlumno.src = videoURL;
+            videoPlayerLocal.load();
+        } else {
+            alert('No hay video disponible. Asegúrate de que el maestro haya subido un video.');
+        }
+    });
+        //Seccion del video URL
+        // Cargar el video desde localStorage
+        window.onload = function() {
+            const videoUrl = localStorage.getItem('videoUrl');
+            const videoId = videoUrl?.split('v=')[1]?.split('&')[0];
+
+            if (videoId) {
+                const videoPlayerAlumno = document.getElementById('video-player-alumno');
+                const videoReproductorAlumno = document.getElementById('video-reproductor-alumno');
+                videoPlayerAlumno.src = `https://www.youtube.com/embed/${videoId}`;
+                videoReproductorAlumno.style.display = 'block'; // Mostrar el contenedor del video
+            }
+        };
+        
+
+        //Codigo de la descripcion
+        document.addEventListener('DOMContentLoaded', () => {
+            const numeroClase = localStorage.getItem('numeroClaseA');
+            const fechaClase = localStorage.getItem('fechaClaseA');
+            const descripcion = localStorage.getItem('descripcionClase');
+            if (descripcion) {
+                document.getElementById('descripcionAlumno').value = descripcion;
+            } if (numeroClase) {
+                document.getElementById('numeroClaseAlumno').value = numeroClase;
+            } if (fechaClase) {
+                document.getElementById('fechaClaseAlumno').value = fechaClase;
+            } 
+            else {
+                document.getElementById('descripcionAlumno').value = "No hay descripción disponible.";
+            }
+        });
+
+        
+        
+
+        //Parte del Examen
+        
+        
+    </script>
+</body>
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <title>Crear Examen</title>
+    <link rel="stylesheet" href="mystyle.css">
+    <style>
+        * {
+            font-family: 'Nunito';
+        }
+       
+        h1 {
+            text-align: center;
+        }
+        #formulario {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .campo {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        input[type="button"] {
+            background:  #036800;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 30px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        .resultado {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .pregunta-agregada {
+            margin-top: 10px;
+            padding: 10px;
+            background: #e9ecef;
+            border-radius: 5px;
+        }
+        nav {
+            background-color: #036800; /* Verde */
+            font-size: 25px;
+            padding: 10px 0;
+            text-align: center;
+            border-radius: 20px;
+            display: inline-block;
+            justify-content: center;
+            z-index: 1;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            padding: 0 20px;
+            border-radius: 20px;
+        }
+        nav a:hover {
+            background-color: #148610; /* Verde */
+            border-radius: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Crear Examen</h1>
+        <nav>
+            <a href="maestro.html">Volver</a>
+            <a href="examenP.html">Ver examen</a>
+        </nav>
+    </header>
+    <br><br>
+    <section id="formulario">
+        <div class="campo">
+            <label for="pregunta">Pregunta:</label>
+            <input type="text" id="pregunta" placeholder="Escribe la pregunta aquí" required>
+        </div>
+        <div class="campo">
+            <label for="respuestaCorrecta">Respuesta Correcta:</label>
+            <input type="text" id="respuestaCorrecta" placeholder="Escribe la respuesta correcta" required>
+        </div>
+        <div class="campo">
+            <label for="respuestaIncorrecta1">Respuesta Incorrecta 1:</label>
+            <input type="text" id="respuestaIncorrecta1" placeholder="Escribe una respuesta incorrecta" required>
+        </div>
+        <div class="campo">
+            <label for="respuestaIncorrecta2">Respuesta Incorrecta 2:</label>
+            <input type="text" id="respuestaIncorrecta2" placeholder="Escribe otra respuesta incorrecta" required>
+        </div>
+        <div class="campo">
+            <label for="respuestaIncorrecta3">Respuesta Incorrecta 3:</label>
+            <input type="text" id="respuestaIncorrecta3" placeholder="Escribe otra respuesta incorrecta" required>
+        </div>
+        <input type="button" value="Agregar Pregunta" id="agregarPregunta">
+        <input type="button" value="Guardar Examen" id="guardarExamen">
+        <div id="resultado" class="resultado"></div>
+        <div id="preguntasAgregadas"></div>
+    </section>
+
+    <script>
+        let preguntas = [];
+
+        document.getElementById("agregarPregunta").onclick = function() {
+            const pregunta = document.getElementById("pregunta").value;
+            const correcta = document.getElementById("respuestaCorrecta").value;
+            const incorrecta1 = document.getElementById("respuestaIncorrecta1").value;
+            const incorrecta2 = document.getElementById("respuestaIncorrecta2").value;
+            const incorrecta3 = document.getElementById("respuestaIncorrecta3").value;
+
+            if (pregunta && correcta && incorrecta1 && incorrecta2 && incorrecta3) {
+                const nuevaPregunta = {
+                    pregunta,
+                    correcta,
+                    incorrectas: [incorrecta1, incorrecta2, incorrecta3]
+                };
+                preguntas.push(nuevaPregunta);
+
+                mostrarPreguntasAgregadas();
+
+                // Limpiar campos de entrada
+                document.getElementById("pregunta").value = "";
+                document.getElementById("respuestaCorrecta").value = "";
+                document.getElementById("respuestaIncorrecta1").value = "";
+                document.getElementById("respuestaIncorrecta2").value = "";
+                document.getElementById("respuestaIncorrecta3").value = "";
+            } else {
+                document.getElementById("resultado").innerHTML = "Por favor completa todos los campos correctamente.";
+            }
+        };
+
+        document.getElementById("guardarExamen").onclick = function() {
+            localStorage.setItem("examen", JSON.stringify(preguntas));
+            document.getElementById("resultado").innerHTML = "Examen guardado con éxito.";
+            preguntas = []; // Reiniciar preguntas
+            document.getElementById("preguntasAgregadas").innerHTML = ""; // Limpiar preguntas mostradas
+        };
+
+        function mostrarPreguntasAgregadas() {
+            const container = document.getElementById("preguntasAgregadas");
+            const preguntaHTML = `
+                <div class="pregunta-agregada">
+                    <strong>Pregunta:</strong> ${preguntas[preguntas.length - 1].pregunta}<br>
+                    <strong>Respuesta Correcta:</strong> ${preguntas[preguntas.length - 1].correcta}<br>
+                    <strong>Respuestas Incorrectas:</strong> ${preguntas[preguntas.length - 1].incorrectas.join(", ")}
+                </div>
+            `;
+            container.insertAdjacentHTML("beforeend", preguntaHTML);
+        }
+    </script>
+</body>
+</html>
+

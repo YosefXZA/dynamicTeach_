@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Personalización del Aprendizaje</title>
+    <link rel="stylesheet" href="mystyle.css">
+    <style>
+        .cuadro {
+            transition: transform 0.3s ease; /* Suaviza la transición */
+            display: inline-block; /* Asegura que el contenedor de la imagen sea un bloque en línea */
+            width: 250px; /* Ancho fijo para las imágenes */
+            height: 300px; /* Alto fijo para las imágenes, ajusta según necesites */
+            overflow: hidden; /* Oculta el desbordamiento */
+            margin-right: 30px; /* Espacio entre las cajas */
+            margin-left: 30px;
+            margin-bottom: 50px;
+        }
+    
+        .cuadro:hover {
+            transform: scale(1.05); /* Aumenta el tamaño al pasar el mouse */
+        }
+    
+        img {
+            width: 100%; /* Asegura que las imágenes se ajusten a su contenedor */
+            height: 80%; /* Asegura que la altura sea la misma que la del contenedor */
+            display: block; /* Elimina el espacio inferior de la imagen */
+            object-fit: cover; /* Mantiene la calidad y recorta la imagen si es necesario */
+        }
+        
+        
+    </style>
+    
+</head>
+<body>
+    <header>
+        <div style="display: flex; justify-content: center; align-items: center;" >
+            <img src="Imagenes/logo.jpg" style="height: 100px; width: 100px;margin-right: 10px;"><br><br><br><br>
+            <h1 style="font-size: 50px; text-align: center;">Dynamic Teach</h1>
+        </div>
+        <h1>“Transforma la enseñanza: un mundo de ideas para clases dinámicas.”</h1>
+    </header>
+
+    <div id="inicio" style="background-image: url('https://www.cetys.mx/noticias/wp-content/uploads/2023/03/Foto-1-1.jpg');background-size: cover;">
+        <div class="caja" >
+        <h2 style="font-size: 50px;">Bienvenido</h2>
+    <div style="display: flex;">
+        <a href="maestro.html" class="cuadro" style="text-decoration: none; color: #036800;">
+            <img src="https://cypes.grupoeurohispana.com/img/profesion/1737/recurso-principal-34715505.jpg">
+            <h1>Maestro</h1>
+        </a>
+        <a href="alumno.html" class="cuadro" style="text-decoration: none; color: #036800;">
+            <img src="https://s1.elespanol.com/2023/09/28/sociedad/educacion/797931011_236391869_1706x1280.jpg">
+            <h1>Alumno</h1>
+        </a>
+    </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Personalización del Aprendizaje. Todos los derechos reservados.</p>
+    </footer>
+
+</body>
+</html>
